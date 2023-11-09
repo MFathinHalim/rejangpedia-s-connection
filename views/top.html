@@ -11,27 +11,10 @@
     min-height: 200vh;
   }
 
-  .navbar-default {
-    transition: 500ms ease;
-    background: transparent;
-  }
-
-  .navbar-default.scrolled {
-    background: #000;
-  }
-
   a {
     color: #00dfa2;
   }
 
-  .navbar {
-    border-radius: 0px 0px 32px 32px;
-    background: linear-gradient(
-      169deg,
-      rgba(0, 0, 0, 0.48) 33.6%,
-      rgba(255, 255, 255, 0) 341.24%
-    );
-  }
 
   .navbar.scrolled {
     /* Replace with your desired background color */
@@ -57,8 +40,6 @@
     height: 100%;
     width: 667px;
     margin: 100px auto;
-    position: relative;
-    overflow: hidden;
   }
 
   #main-wrapper {
@@ -66,43 +47,15 @@
     overflow: auto;
   }
   @media (max-width: 500px) {
-    body {
-      overflow: auto;
-    }
-
     #phone {
-      height: 100vh;
-      display: flex;
       width: 100%;
       margin: 0px auto;
     }
 
     #main-wrapper {
       width: 100%;
-      flex-grow: 1;
     }
   }
 </style>
 
-<header>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var navbar = document.getElementById("navbar");
-      var scrolledClass = "scrolled";
-      var transparentClass = "transparent";
 
-      function toggleNavbarBackground() {
-        if (window.pageYOffset > 0) {
-          navbar.classList.remove(transparentClass);
-          navbar.classList.add(scrolledClass);
-        } else {
-          navbar.classList.remove(scrolledClass);
-          navbar.classList.add(transparentClass);
-        }
-      }
-
-      toggleNavbarBackground();
-      window.addEventListener("scroll", toggleNavbarBackground);
-    });
-  </script>
-</header>

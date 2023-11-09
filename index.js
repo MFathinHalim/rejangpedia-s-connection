@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = require('./app');
+var http = require('http').Server(app);
+
 
 const uri = process.env.MONGODBURI;
 const port = 3000;
@@ -13,8 +15,8 @@ mongoose.connect(uri, {
 })
   .then(() => {
     console.log('Connected to the database');
-    app.listen(port, () => {
-      console.log(`App is running on port ${port}`);
+    http.listen(port, () => {
+      console.log('server is running on 3000');
     });
   })
   .catch((error) => {

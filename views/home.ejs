@@ -2,8 +2,8 @@
 <html>
   <!-- Header -->
   <head>
-    <title>Diskuline</title>
-    <link rel="icon" href="images/Menfess.png" type="image/x-icon" />
+    <title>rejangpedia</title>
+    <link rel="icon" href="images/logo.png" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
       async
@@ -64,33 +64,11 @@
   </script>
   <!-- Body(Tampilan) -->
   <body style="background: #000000">
+        <%- include('navbar.ejs') -%>
+
     <div id="phone">
       <div id="main-wrapper" class="fancy-scrollbar">
-        <nav
-          class="navbar navbar-expand-lg shadow navbar-dark sticky-top"
-          id="navbar">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-              <img style="width: 50px;border-radius: 34px; "
-              src=/images/Menfess.png> Diskuline!
-            </a>
-
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a
-                  class="nav-link btn-primary btn p-1"
-                  href="#tentang"
-                  style="
-                    background: rgba(243, 222, 186, 0);
-                    color: rgb(255, 255, 255);
-                    font-size: 50px;
-                  "
-                  >+</a
-                >
-              </li>
-            </ul>
-          </div>
-        </nav>
+        
         <!-- Tampilan Pada Aplikasi agar tidak mengganggu Sidebar -->
         <div
           class="container-fluid mt-4"
@@ -98,11 +76,10 @@
             border-radius: 32px 32px 0px 0px;
             background: linear-gradient(
               180deg,
-              #4e4feb 0%,
+              #4e4feb 100%,
               rgba(78, 79, 235, 0) 100%
             );
-            padding-bottom: 50px;
-          ">
+            padding-bottom: 50px;">
           <div class="text-center mb-4" id="tentang">
             <div
               class="card"
@@ -114,8 +91,8 @@
               ">
               <div class="card-body text-white">
                 <!-- Form untuk Posting -->
-                <h4>Ada Pertanyaan?</h4>
-                <form action="/" method="post" enctype="multipart/form-data">
+                <h4 id="greeting">Halo</h4>
+                <form action="/chat" method="post" id="add" enctype="multipart/form-data">
                   <input type="number" name="noteId" hidden />
                   <!-- noteId (Seperti Biasa) -->
                   <input
@@ -124,10 +101,11 @@
                     id="noteColor"
                     value="0"
                     hidden />
+                    <label for="noteContent">Tulis Apa Yang Terjadi!</label>
                   <textarea
-                    class="form-control"
+                    class="form-control text-white"
                     rows="6"
-                    placeholder="Tulis Pertanyaan Anda!"
+                    placeholder="Tulis Apa Yang Terjadi!"
                     name="noteContent"></textarea>
                   <!-- Mengenai apa yang ingin diposting -->
                   <br />
@@ -136,14 +114,16 @@
                       type="text"
                       class="form-control input"
                       placeholder="Judul Diskusi"
-                      name="noteName" />
+                      id="noteName"
+                      name="noteName" 
+                      style="display: none"/>
                   </div>
                   <!-- Nama -->
                   <br />
                   <div class="form-group">
                     <label
                       for="choose"
-                      class="btn btn-primaryy"
+                      class="btn btn-primary"
                       style="
                         border-radius: 33px;
                         background: rgba(255, 255, 255, 0.33);
@@ -159,13 +139,17 @@
                       onchange="previewImage(event)" />
 
                     <button
-                      type="submit"
-                      class="btn btn-primary"
+                    data-sitekey="6LfslRQoAAAAAHVBGwEVitjEQSjCD6F8unKDUdct"
+          data-callback="onSubmit"
+          name="g-recaptcha-response"
+          class="g-recaptcha btn btn-primary"
+          data-action="submit"
+          type="submit"
                       style="
                         border-radius: 33px;
                         background: rgba(255, 255, 255, 0.33);
                       ">
-                      Tanya!
+                      Posting!
                     </button>
                   </div>
                   <img
@@ -180,6 +164,7 @@
                     " />
 
                   <!-- Tombol Post -->
+
                 </form>
               </div>
             </div>
@@ -209,7 +194,7 @@
               <img
                 class="img-fluid"
                 name="img"
-                src="https://ik.imagekit.io/9hpbqscxd/image-<%= element.noteId %>.jpg"
+                src="https://ik.imagekit.io/9hpbqscxd/RejangConnection/image-<%= element.noteId %>.jpg"
                 onerror="this.remove();"
                 alt="Gambar"
                 style="object-fit: cover; border-radius: 38px" />
@@ -272,7 +257,7 @@
                 id="comments<%= element.noteId %>"
                 class="mt-3"
                 style="display: none">
-                <form action="/comment/<%= element.noteId %>" method="post">
+                <form action="/comment/<%= element.noteId %>" id="comment" method="post">
                   <h4 class="card-title">Comments:</h4>
                   <input
                     type="number"
@@ -307,14 +292,14 @@
                   <% if (element.comment && element.comment.length > 0) { %>
                   <ul class="list-group mt-3">
                     <% (element.comment).forEach(comments => { %>
-                    <li class="list-group-item">
+                    <li class="list-group-item text-white" style="border-radius: 38px; background: rgba(255, 255, 255, 0.33)">
                       <strong><%= comments.commenterName %>:</strong> <%=
                       comments.commentContent %>
                     </li>
                     <% }) %>
                   </ul>
                   <% } else{ %>
-                  <li class="list-group-item">Belum Ada Comment</li>
+                  <li class="list-group-item text-white" style="border-radius: 38px; background: rgba(255, 255, 255, 0.33)">Belum Ada Comment</li>
                   <% } %>
                 </div>
               </div>
@@ -339,7 +324,127 @@
           <% } %>
         </div>
         <br />
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous">
+          var socket = io();
+
+          function addMessages(message){
+           $(“#messages”).append(`
+              <div
+            id="cardp{message.id}"
+            class="card mb-3 text-white"
+            style="border-radius: 38px; background: rgba(255, 255, 255, 0.33)">
+            <div class="card-body rounded">
+              <h2 class="card-title">
+                <strong>{message.noteName}</strong>
+                <button
+                  onclick="share('{message.noteId}')"
+                  class="btn btn-primaryy m-4"
+                  style="
+                    color: rgb(255, 255, 255);
+                    border-radius: 24px;
+                    background: rgba(77, 78, 231, 0.76);
+                  ">
+                  <ion-icon name="share-social-outline"></ion-icon>
+                </button>
+              </h2>
+              <p class="card-text">{message.noteContent}</p>
+
+              <img
+                class="img-fluid"
+                name="img"
+                src="https://ik.imagekit.io/9hpbqscxd/image-{message.noteId}.jpg"
+                onerror="this.remove();"
+                alt="Gambar"
+                style="object-fit: cover; border-radius: 38px" />
+              <div
+                class="d-flex justify-content-between align-items-center m-4">
+                <form
+                  action="/like/{message.noteId}"
+                  method="post"
+                  enctype="multipart/form-data">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="border-radius: 73px; background: #4d4ee7">
+                    <ion-icon name="caret-up-outline"></ion-icon>
+                  </button>
+                </form>
+
+                
+
+                <button
+                  onclick="toggleComments('comments{message.noteId}')"
+                  class="btn btn-primary"
+                  style="
+                    border-radius: 24px;
+                    background: rgba(77, 78, 231, 0.76);
+                  ">
+                  <ion-icon name="chatbubble-outline"></ion-icon> Komentar
+                </button>
+              </div>
+              <div
+                id="comments{message.noteId}"
+                class="mt-3"
+                style="display: none">
+                <form action="/comment/{message.noteId}" method="post">
+                  <h4 class="card-title">Comments:</h4>
+                  <input
+                    type="number"
+                    name="noteId"
+                    value="{message.noteId}"
+                    hidden />
+                  <div class="mb-3">
+                    <label for="commentContent" class="form-label"
+                      >Apa Yang Anda Pikirkan?</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="commentContent"
+                      placeholder="Tulis Yang Anda Pikirkan!"
+                      name="commentContent" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="commenterName" class="form-label">Nama?</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="commenterName"
+                      placeholder="Nama Anda?"
+                      name="commenterName" />
+                  </div>
+                  <button type="submit" class="btn btn-primaryy">
+                    Add Comment
+                  </button>
+                </form>
+                <div>
+
+                  <li class="list-group-item">Belum Ada Comment</li>
+                </div>
+              </div>
+            </div>
+          </div>`)
+           }
+           function getMessages(){
+            $.get(‘http://localhost:3000/messages', (data) => {
+             data.forEach(addMessages);
+             })
+           }
+           
+          function sendMessage(message){
+             $.post(‘http://localhost:3000/messages', message)
+           }
+          socket.on(‘message’, addMessages)
+
+        </script>
         <script>
+          function onSubmit() {
+            document.getElementById("add").submit()
+          }
+          document.getElementById("noteName").value = localStorage.getItem("loggedInUser")
+          document.getElementById("greeting").innerText = "Halo, " + localStorage.getItem("loggedInUser")
+
+
           var aButtons = document.querySelectorAll(".pagination a");
           aButtons.forEach(function (button) {
             button.addEventListener("click", function (event) {
@@ -358,7 +463,16 @@
             }
           }
         </script>
+        <script src="/socket.io/socket.io.js"></script>
+
       </div>
     </div>
   </body>
+  <script>
+  // Mendapatkan data pengguna dari userProfile jika tersedia
+  const userData = localStorage.getItem('loggedInUser');
+  if (!userData) {
+    window.location.href = "/"
+  }
+</script>
 </html>
