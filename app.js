@@ -294,7 +294,7 @@ app.get("/share/:noteId", function(req, res) {
     element: data[itemIndex],
   });
 });
-app.get("/details/user/:noteId", function(req, res) {
+app.get("/:noteId", function(req, res) {
   const noteIdGet = req.params.noteId.trim();
 
   const matchingItems = data.filter(({ noteName }) => noteName === noteIdGet);
