@@ -287,18 +287,22 @@ app.get("/videos", function(req, res) {
 });
 //TODO in this function, its just loaded the shared link and move the data to first on array
 app.get("/share/:noteId", function(req, res) {
-  shuf = false;
-  const noteIdGet = parseInt(req.params.noteId.trim());
+  const noteIdGet = req.params.noteId.trim();
 
   const itemIndex = data.findIndex(({noteId}) => noteId == noteIdGet)
-
-  if (itemIndex !== -1) {
-    const item = data.splice(itemIndex, 1)[0];
-    data.unshift(item);
-  }
-
-  res.redirect("/chat");
+  res.render("details", {
+    element: data[itemIndex],
+  });
 });
+app.get("/details/user/:noteId", function(req, res) {
+  const noteIdGet = req.params.noteId.trim();
+
+  const matchingItems = data.filter(({ noteName }) => noteName === noteIdGet);
+  
+  const applicationFunction = new Application(matchingItems, "home", req.params.pageNumber, res);
+  applicationFunction.getFunction();
+});
+
 //? ======================================================================================
 //* okay, the next one will be little harder
 //TODO first, the function to post menfess

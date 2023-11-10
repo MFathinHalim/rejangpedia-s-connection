@@ -76,7 +76,7 @@
             border-radius: 32px 32px 0px 0px;
             background: linear-gradient(
               180deg,
-              #4e4feb 100%,
+              #39375B 100%,
               rgba(78, 79, 235, 0) 100%
             );
             padding-bottom: 50px;">
@@ -92,7 +92,7 @@
               <div class="card-body text-white">
                 <!-- Form untuk Posting -->
                 <h4 id="greeting">Halo</h4>
-                <form action="/chat" method="post" id="add" enctype="multipart/form-data">
+<form action="/chat" method="post" id="add" enctype="multipart/form-data">
                   <input type="number" name="noteId" hidden />
                   <!-- noteId (Seperti Biasa) -->
                   <input
@@ -108,7 +108,6 @@
                     placeholder="Tulis Apa Yang Terjadi!"
                     name="noteContent"></textarea>
                   <!-- Mengenai apa yang ingin diposting -->
-                  <br />
                   <div class="form-group">
                     <input
                       type="text"
@@ -119,39 +118,6 @@
                       style="display: none"/>
                   </div>
                   <!-- Nama -->
-                  <br />
-                  <div class="form-group">
-                    <label
-                      for="choose"
-                      class="btn btn-primary"
-                      style="
-                        border-radius: 33px;
-                        background: rgba(255, 255, 255, 0.33);
-                      "
-                      >Pilih Gambar!</label
-                    >
-                    <input
-                      type="file"
-                      class="form-control-file"
-                      name="image"
-                      id="choose"
-                      style="display: none"
-                      onchange="previewImage(event)" />
-
-                    <button
-                    data-sitekey="6LfslRQoAAAAAHVBGwEVitjEQSjCD6F8unKDUdct"
-          data-callback="onSubmit"
-          name="g-recaptcha-response"
-          class="g-recaptcha btn btn-primary"
-          data-action="submit"
-          type="submit"
-                      style="
-                        border-radius: 33px;
-                        background: rgba(255, 255, 255, 0.33);
-                      ">
-                      Posting!
-                    </button>
-                  </div>
                   <img
                     id="imagePreview"
                     src="https://www.preview.ph/preview-2.jpg"
@@ -159,22 +125,35 @@
                     style="
                       max-width: 100%;
                       max-height: 200px;
-                      margin-top: 10px;
+                      margin: 10px;
                       border-radius: 33px;
                     " />
-
-                  <!-- Tombol Post -->
-
+                  <div class="form-group">
+                    <input type="file" class="form-control-file" name="image" id="choose" style="display: none" onchange="previewImage(event)" />
+                    <label for="choose" class="btn btn-primary" style="border-radius: 33px; background: rgba(255, 255, 255, 0.33);">Pilih Gambar!</label>
+                    <button
+                      data-sitekey="6LfslRQoAAAAAHVBGwEVitjEQSjCD6F8unKDUdct"
+                      data-callback="onSubmit"
+                      name="g-recaptcha-response"
+                      class="g-recaptcha btn btn-primary"
+                      data-action="submit"
+                      type="submit"
+                      style="border-radius: 33px; background: rgba(255, 255, 255, 0.33);">
+                      Posting!
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>
           </div>
           <hr class="hr text-white" />
           <% data.forEach(element => { %>
+                    <hr class="border-white"/>
+
           <div
             id="cardp<%= element.noteId %>"
             class="card mb-3 text-white"
-            style="border-radius: 38px; background: rgba(255, 255, 255, 0.33)">
+            style="border-radius: 38px; background: rgba(255, 255, 255, 0); border: none;">
             <div class="card-body rounded">
               <h2 class="card-title">
                 <strong><%= element.noteName %></strong>
@@ -197,7 +176,7 @@
                 src="https://ik.imagekit.io/9hpbqscxd/RejangConnection/image-<%= element.noteId %>.jpg"
                 onerror="this.remove();"
                 alt="Gambar"
-                style="object-fit: cover; border-radius: 38px" />
+                style="object-fit: cover; border-radius: 24px" />
               <div
                 class="d-flex justify-content-between align-items-center m-4">
                 <form
@@ -206,48 +185,45 @@
                   enctype="multipart/form-data">
                   <button
                     type="submit"
-                    class="btn btn-primary"
-                    style="border-radius: 73px; background: #4d4ee7">
-                    <ion-icon name="caret-up-outline"></ion-icon>
-                  </button>
+                    class="btn btn-primary p-3 rounded-pill"
+                    style="background: #4d4ee7">
+<ion-icon name="thumbs-up-sharp"></ion-icon>                  </button>
                 </form>
 
                 <script>
                   function share(text) {
                     var copyText =
-                      "https://diskuline.mfathinhalim.repl.co/" +
-                      "share/" +
+                      "https://rejangpedia-connect.mfathinhalim.repl.co" +
+                      "/share/" +
                       text;
-                    const shareData = {
-                      title: "Menfess!!",
-                      text: "Sebuah Post dari <%= element.noteName %>!",
-                      url: copyText,
-                    };
+
                     // Copy the text inside the text field
-                    //navigator.clipboard.writeText(copyText);
-                    const textArea = document.createElement("textarea");
-                    textArea.value = copyText;
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    try {
-                      document.execCommand("copy");
-                    } catch (err) {
-                      console.error("Unable to copy to clipboard", err);
+                    if (navigator.share) {
+                      navigator.clipboard.writeText(copyText);
+
+                      navigator
+                        .share({
+                          title: "rejangpedia",
+                          text: "postingan dari sanak",
+                          url: copyText,
+                        })
+                        .then(() => console.log("Successful share"))
+                        .catch((error) => console.log("Error sharing", error));
+                    } else {
+                      try {
+                        window.AndroidShareHandler.share(copyText);
+                      } catch {
+                        navigator.clipboard.writeText(copyText);
+                        alert("Sudah Di Salin Ya, silahkan Beri ke Temanmu ya ^_^");
+                      }
                     }
-                    document.body.removeChild(textArea);
-                    //navigator.share(shareData)
-                    alert(
-                      "Udah di copy nih, silahkan share ke temen kamu ya:3"
-                    );
                   }
                 </script>
 
                 <button
                   onclick="toggleComments('comments<%= element.noteId %>')"
-                  class="btn btn-primary"
+                  class="btn btn-primary p-3 rounded-pill"
                   style="
-                    border-radius: 24px;
                     background: rgba(77, 78, 231, 0.76);
                   ">
                   <ion-icon name="chatbubble-outline"></ion-icon> Komentar
@@ -284,9 +260,10 @@
                       placeholder="Nama Anda?"
                       name="commenterName" />
                   </div>
-                  <button type="submit" class="btn btn-primaryy">
+                  <button type="submit" class="btn btn-primary m-1 rounded-pill" style="background: rgba(255,255,255,0.33);">
                     Add Comment
                   </button>
+                  <hr class="border-white" />
                 </form>
                 <div>
                   <% if (element.comment && element.comment.length > 0) { %>
@@ -305,7 +282,6 @@
               </div>
             </div>
           </div>
-
           <% }) %>
         </div>
 
