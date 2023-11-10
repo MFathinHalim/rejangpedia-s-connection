@@ -155,7 +155,7 @@
             class="card mb-3 text-white"
             style="border-radius: 38px; background: rgba(255, 255, 255, 0); border: none;">
             <div class="card-body rounded">
-              <h2 class="card-title">
+              <a class="card-title" href="https://rejangpedia-connect.mfathinhalim.repl.co/<%= element.noteName %>">
                 <strong><%= element.noteName %></strong>
                 <button
                   onclick="share('<%= element.noteId %>')"
@@ -167,7 +167,7 @@
                   ">
                   <ion-icon name="share-social-outline"></ion-icon>
                 </button>
-              </h2>
+              </a>
               <p class="card-text"><%= element.noteContent %></p>
 
               <img
